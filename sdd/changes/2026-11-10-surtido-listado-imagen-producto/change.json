@@ -1,0 +1,40 @@
+{
+  "id": "2026-11-10-surtido-listado-imagen-producto",
+  "slug": "surtido-listado-imagen-producto",
+  "title": "Imagen del producto en el listado de surtido V2",
+  "kind": "feature",
+  "intensity": "standard",
+  "status": "specified",
+  "created": "2026-11-10",
+  "capabilities": [
+    "surtido-listado"
+  ],
+  "repos": [
+    "frontend"
+  ],
+  "owner": "carlos.marquez",
+  "reviewers": {
+    "P": "carlos.marquez",
+    "A": "",
+    "Q": ""
+  },
+  "gates": {
+    "P": null,
+    "A": null,
+    "Q": null,
+    "D": null
+  },
+  "synced": false,
+  "metrics": {},
+  "history": [
+    {
+      "status": "intent",
+      "at": "2026-11-10T17:23:42.098Z"
+    },
+    {
+      "status": "specified",
+      "at": "2026-11-10T17:29:45.388Z"
+    }
+  ],
+  "updated": "2026-11-10T17:29:45.720Z"
+}

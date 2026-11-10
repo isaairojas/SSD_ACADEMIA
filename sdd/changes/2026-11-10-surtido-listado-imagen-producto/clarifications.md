@@ -1,0 +1,9 @@
+# Clarificaciones · 2026-11-10-surtido-listado-imagen-producto
+
+| # | Fecha | Pregunta | Respuesta (quién) | Dónde se codificó (requisito / escenario / intent) |
+| --- | --- | --- | --- | --- |
+| 1 | 2026-11-10 | ¿La imagen en el listado se activa por sucursal (piloto) o se muestra en todas las sucursales desde la liberación? | Por sucursal (piloto); el resto ve el listado como hoy. (carlos.marquez, Producto) | Requirement "Activación de la imagen por sucursal", escenario "Sucursal sin activar" |
+| 2 | 2026-11-10 | Cuando un producto no tiene imagen o no carga, ¿qué ve el surtidor en su lugar? | Solo un icono genérico de producto, sin texto. (carlos.marquez, Producto) | Requirement "Producto sin imagen en el listado" y sus dos escenarios; Requirement "Activación de la imagen por sucursal" |
+| 3 | 2026-11-10 | Mientras la imagen de un producto se carga, ¿qué se ve en su espacio? | Lo mismo que sin imagen: el icono genérico, hasta que la imagen llega y lo sustituye. (carlos.marquez, Producto) | Requirement "Listado utilizable mientras cargan las imágenes", escenarios "Escaneo antes de que carguen las imágenes" y "La imagen termina de cargar" (nuevo) |
+| 4 | 2026-11-10 | Un producto negado o ya surtido completo, ¿cómo muestra su imagen? | Igual en todos los estados; el estado lo indican los datos que ya muestra el listado. (carlos.marquez, Producto) | Requirement "Imagen del producto en el listado", escenario "Producto en cualquier estado de surtido" |
+| 5 | 2026-11-10 | Si el surtidor pulsa la imagen de un producto, ¿qué pasa? | No hace nada; el detalle se abre pulsando el resto del producto. (carlos.marquez, Producto) | Requirement "La imagen no cambia el comportamiento del listado" (texto del SHALL), escenarios "Pulsar la imagen de un producto" y "Abrir el detalle desde el producto" (nuevo) |
