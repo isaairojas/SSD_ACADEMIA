@@ -1,0 +1,8 @@
+{
+  "name": "ssd-academia",
+  "private": true,
+  "description": "Artefactos SDD de exodus-gtm-pwa para el taller exodus-sdd (sin código de la app)",
+  "scripts": {
+    "sdd:check": "node tools/sdd/sdd-validate.mjs --ci"
+  }
+}
