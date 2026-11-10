@@ -1,0 +1,59 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--color-blanco);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+.sectionTitle {
+  display: flex;
+  gap: 10px;
+  height: 21px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sectionTitle p {
+  color: var(--color-negro);
+  font: var(--font-h3-headline);
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.fieldWidth {
+  display: flex;
+  width: 362.563px;
+}
+
+.half {
+  flex: none;
+  width: 173.5px;
+}
+
+/* Handheld angosto (≤ 420 px, p. ej. Zebra a 360 px): márgenes laterales de 16 px como Revision-HH-v2,
+   que ya se probó en sucursal. En el marco de 430 px se conservan las medidas de Figma. */
+@media (max-width: 420px) {
+  .section {
+    align-self: stretch;
+  }
+
+  .fieldWidth {
+    width: 100%;
+  }
+
+  .fieldWidth > * {
+    flex: 1 1 auto;
+  }
+
+  .half {
+    flex: 1 1 0;
+    width: auto;
+    min-width: 0;
+  }
+}

@@ -1,0 +1,204 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--color-blanco);
+}
+
+/* 3199:6380 */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  width: 100%;
+}
+
+/* "Datos" — 3199:6381 */
+.datos {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 100%;
+}
+
+/* 3199:6393 */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  width: 100%;
+}
+
+/* "Datos surtido" — 3199:6394 */
+.pair {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+/* ---- Desglose por pedido (FR-013) — sin respaldo en Figma ---- */
+
+/* "Surtido por pedido" — 41:2429 de la referencia: título S2 y filas con divisor */
+.desglose {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.desgloseHead {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.desgloseTitulo {
+  margin: 0;
+  color: var(--color-negro);
+  font: var(--font-s2-subtitle);
+  line-height: normal;
+}
+
+.varianteChip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--color-var-revision-en-surtido-amarillo);
+  color: var(--color-negro);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.presencias {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.presenciaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.presencia {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 5px;
+}
+
+/* Pedido al que entra el próximo escaneo (FR-010). Era rojo (sesión 2026-10-27); desde el
+   2026-11-02 va en azul claro, el mismo resaltado del producto escaneado en la lista. */
+.presenciaActiva {
+  background: var(--color-primary-azul-0);
+  box-shadow: inset 4px 0 0 var(--color-primary-azul-300);
+  padding-left: 12px;
+}
+
+/* Pedidos que no se están surtiendo: en gris, como inhabilitados. El chip no se atenúa para
+   que el estatus siga legible (p. ej. "11 de 11" en verde). */
+.presenciaInactiva .presenciaLetra {
+  opacity: 0.5;
+}
+
+.presenciaInactiva .presenciaPedido,
+.presenciaInactiva .presenciaSolicitado {
+  color: var(--color-inactive-text);
+}
+
+.presenciaLetra {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.presenciaInfo {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.presenciaHead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  align-items: center;
+}
+
+.presenciaPedido {
+  color: var(--color-negro);
+  font: 400 12px/normal var(--font-family-roboto);
+}
+
+.presenciaBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--color-primary-azul-300);
+  color: var(--color-blanco);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.presenciaSolicitado {
+  color: var(--color-negro);
+  font: var(--font-b2-body);
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.presenciaMotivo {
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-secondary-rojo-300);
+  font: var(--font-b1-body);
+  line-height: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.presenciaAccion {
+  display: flex;
+  flex-shrink: 0;
+  justify-content: flex-end;
+}
+
+.consulta {
+  width: 100%;
+  margin: 0;
+  color: var(--color-inactive-text);
+  font: var(--font-b1-body);
+  line-height: normal;
+}
+
+/* Lector dentro del detalle (FR-015) — añadido propio, no está en Figma.
+   El ScanInput está pensado para la barra inferior blanca, así que aquí va sobre blanco:
+   un relleno azul lo sacaba del lenguaje del design-system. */
+.lector {
+  display: flex;
+  width: 100%;
+  padding-top: 4px;
+  border-top: 1px solid var(--color-divider);
+}
+
+.flex1 {
+  flex: 1 0 0;
+}

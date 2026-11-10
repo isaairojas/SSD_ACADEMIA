@@ -1,27 +1,32 @@
-# Exodus GTM (exodus-gtm-pwa)
+# SSD_ACADEMIA · simulador HH de surtido multi-orden
 
-App operativa para el personal de sucursal: Android (HandHeld con escáner en modo teclado) y PWA web, con Expo ~50 / React Native 0.73 / TypeScript. Consume los servicios .NET a través de `api-gateway-rb`. Solo en español (es-MX).
+Repositorio simulado para el taller de `exodus-sdd`. El código es un simulador web (React 18 + Vite 5 + TypeScript) del flujo de surtido multi-orden de la HH de Exodus GTM. No hay back-end: los datos son mocks. Solo en español (es-MX).
 
 ## Trabajo con SDD (kit `exodus-sdd`)
-- La verdad funcional vive en `sdd/specs/<capacidad>/spec.md` (15 capacidades; ver `sdd/steering/product.md`). Lee la spec de la capacidad antes de tocar su código.
-- Hoy todas son **specs observadas** (describen lo que el código hace, no lo que debería): no las tomes como requisito validado hasta que Producto las valide. Estado de la adopción y pendientes: `sdd/adopcion.md`.
-- Todo cambio funcional empieza con `/exodus-sdd:intent` y se modifica mediante deltas en `sdd/changes/<id>/`. No edites `sdd/specs/`, `sdd/constitution.md` ni `sdd/changes/archive/` a mano: el hook `sdd-guard` lo bloquea; usa `/exodus-sdd:sync`.
-- Principios del proyecto: `sdd/constitution.md`. Contexto estable: `sdd/steering/{product,structure,tech,servicios}.md`.
-- Implementa el agente de front-end `frontend-exodus:dev-frontend`. Su estándar está escrito para Next.js / React + Vite; hasta que Arquitectura decida cómo aplica a Expo / React Native, el patrón de este repo (abajo) manda sobre el estándar.
-- Valida antes de abrir un MR: `npm run sdd:check` (mismo validador que el job `sdd-validate` de GitLab CI; copia en `tools/sdd/`).
+- `sdd/` es la canónica de la app real `exodus-gtm-pwa`: constitución, steering y 15 specs **observadas** (describen lo que hace la app hoy, sin validar por Producto). El simulador reproduce en web su flujo de surtido.
+- Todo cambio funcional empieza con `/exodus-sdd:intent` y se modifica mediante deltas en `sdd/changes/<id>/`. No edites `sdd/specs/`, `sdd/constitution.md` ni `sdd/changes/archive/` a mano: entran por `/exodus-sdd:sync`.
+- Las compuertas las registra una persona con `node tools/sdd/sdd-change.mjs gate <id> <P|A|Q|D> --by <rol>`; los agentes las piden y se detienen.
+- Implementa el agente `frontend-exodus:dev-frontend`. Si su estándar choca con el patrón existente del simulador (abajo), se reporta como hallazgo; no se reescribe el código existente.
+- Los principios 11–15 de la constitución y `steering/tech.md` y `steering/structure.md` describen la app real (Expo / React Native: Controller / Screen, `src/http/`, `src/i18n/es.ts`, Jest en `__test__/`). Este simulador no tiene esa estructura; cómo aplican aquí lo decide Arquitectura.
+- Valida antes de abrir un PR: `npm run sdd:check` (mismo validador que el job `validar` de `.github/workflows/sdd-ci.yml`).
 
-## Estructura y reglas del código
-Las reglas siguientes son los principios 11–15 de `sdd/constitution.md`; si difieren, manda la constitución.
-- `src/views/{AuthStack,HomeStack}/<Pantalla>/`: patrón **Controller / Screen**. La lógica y las llamadas a servicios van en `*Controller.tsx`; `*Screen.tsx` solo presenta. (Excepción heredada: `InventoryCountScreen.tsx`.)
-- `src/services/`: un módulo por dominio sobre los clientes de `src/http/`. Toda llamada HTTP pasa por esos clientes (headers `Authorization` y `X-ExodusDev`, manejo de 401/499 en `src/utils/services.tsx`).
-- `src/components/{atoms,molecules,organisms,templates,icons}`: atomic design.
-- `src/rtk/`: Redux Toolkit + redux-persist (AsyncStorage). `src/hooks/`, `src/utils/`, `src/theme/`, `src/types/`.
-- Textos de usuario en `src/i18n/es.ts`; no agregues literales nuevos en pantallas ni componentes.
-- Lo que varía por sucursal se decide con banderas (`catalogo-bandera-sucursal`), no con ids de sucursal fijos.
+## Estructura del código
+- `src/domain/`: lógica pura sin React. `ronda.ts` (reducer de la ronda y vista agregada por código: `productosVista`), `configMultiorden.ts` (parámetros y banderas de la sucursal), `codigos.ts`, `sonidos.ts`. Se prueba en Node, sin montar React.
+- `src/screens/surtido/` y `src/screens/tareas/`: pantallas, con su CSS Module al lado. Rutas en el hash (`HashRouter`): `#/tareas` → `#/ronda` → `#/surtido` → `#/detalle/:codigo` → `#/ronda-terminada`.
+- `src/design-system/`: design system heredado (atoms, molecules, organisms, tokens), con alias `@ds`. Precedente de foto de producto: `ProductSummary` en `DetalleProducto.tsx`.
+- `src/store/AppStore.tsx`: estado de la ronda (Context + `useReducer` con `rondaReducer`).
+- `src/mocks/ronda.ts`: datos de la demo (3 pedidos, 8 códigos reales; imágenes en `src/assets/productos/`).
+- `src/navigation/`: ayudas de demo que no tocan la lógica (`EscenariosPanel`, `CodigosCheatsheet`, `escenarios.ts`, `ToastHost`).
+- `tests/domain/`: pruebas del dominio con `node --test`; `loader.mjs` resuelve lo que normalmente resuelve Vite (imágenes importadas e imports sin extensión).
+- El código marca cada punto de integración con la leyenda `SDD <id-del-cambio> · <Requirement>`.
+
+Restricciones del taller: sin dependencias nuevas; ninguna tarea toca `vite.config.ts`, `.github/workflows/` ni `src/design-system/` salvo que el diseño lo diga.
 
 ## Comandos
-- Dependencias: `npm install` (el repo versiona `package-lock.json`; el README aún menciona Yarn).
-- Web: `npm run web` · Android: `npm run android` · Dev server: `npm start`.
-- Pruebas: `npm test` (Jest + jest-expo; corre `--onlyChanged`). Las pruebas van en `__test__/`, espejo de `src/`.
-- Lint: `npm run lint` (ESLint + Prettier; el pre-commit de husky está desactivado).
+- Dependencias: `npm ci`.
+- Desarrollo: `npm run dev` (http://localhost:5181; para la HH revisa a 360 px de ancho).
+- Tipos: `npm run typecheck` · Pruebas del dominio: `npm run test:domain` · Build: `npm run build`.
 - Validación SDD: `npm run sdd:check`.
+
+## Publicación
+Cada push a `main` corre `.github/workflows/deploy.yml`: publica el build en GitHub Pages y en la rama `demo` (para abrirla con githack en datos móviles). El build usa rutas relativas (`base: './'`) y `@vitejs/plugin-legacy` genera la versión para el navegador de las HH Zebra (chrome ≥ 49): no garantiza un `sort` estable, así que al ordenar usa desempate explícito.

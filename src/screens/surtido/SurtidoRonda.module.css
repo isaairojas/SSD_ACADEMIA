@@ -1,0 +1,23 @@
+.screen {
+  position: absolute;
+  inset: 0;
+  background: var(--color-blanco);
+  display: flex;
+  flex-direction: column;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  /* 21 px del panel + 10 px de relleno de la fila − 19 = 12 px visibles bajo los contenedores. */
+  margin-top: -19px;
+}
+
+.itemContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.full {
+  width: 100%;
+}

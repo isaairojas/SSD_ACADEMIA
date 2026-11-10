@@ -1,0 +1,159 @@
+/* Card de la ronda — 15:1528 (Handheld for Claude): foto de 60, gap 15, filas apiladas con 8 px */
+.row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  padding: 10px 11px;
+  background: var(--color-blanco);
+  color: var(--color-negro);
+  text-align: left;
+  border: none;
+  cursor: pointer;
+}
+
+.row:disabled {
+  cursor: default;
+}
+
+/* Último producto escaneado — `.articulo-highlight` de Revision-HH-v2, con el azul claro del design-system */
+.marcado {
+  background: var(--color-primary-azul-0);
+  transition: background-color 0.15s ease;
+}
+
+/* Miniatura sin borde ni fondo (D47 de la referencia) */
+.content {
+  display: flex;
+  flex: 1 0 0;
+  flex-direction: column;
+  align-self: stretch;
+  gap: 8px;
+  min-width: 1px;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+
+.codigoLinea {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  min-width: 0;
+  flex: 1;
+}
+
+.codigo {
+  font: var(--font-h2-headline);
+  line-height: normal;
+}
+
+.ubicacion {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  min-width: 0;
+  white-space: nowrap;
+}
+
+.ubicacionItem {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.ubicacionItem span {
+  font: var(--font-label);
+  text-transform: var(--text-transform-label);
+}
+
+.ubicacionItem b {
+  font: var(--font-b2-body);
+  line-height: normal;
+}
+
+/* Desglose por contenedor — "Stock" 15:1545 */
+.desglose {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  width: 100%;
+}
+
+.tag {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px var(--color-primary-azul-300);
+  background: var(--color-blanco);
+  color: var(--color-primary-azul-300);
+  font: var(--font-label);
+  white-space: nowrap;
+}
+
+.tag b {
+  font-weight: 700;
+}
+
+.tagParcial {
+  background: var(--color-estatus-parcialidad);
+  box-shadow: none;
+  color: var(--color-negro);
+}
+
+.tagNegado {
+  background: var(--color-estatus-negado);
+  box-shadow: none;
+  color: var(--color-negro);
+}
+
+.tagListo {
+  background: var(--color-estatus-completado);
+  box-shadow: none;
+  color: var(--color-active-text);
+}
+
+/* Igual que la etiqueta "Mismo cliente" del Detalle de la ronda (34:154) */
+.chipMismoCliente {
+  flex-shrink: 0;
+  padding: 2px 8px;
+  border-radius: 5px;
+  background: var(--color-primary-azul-300);
+  color: var(--color-blanco);
+  font: 700 12px/normal var(--font-family-roboto);
+  white-space: nowrap;
+}
+
+/* Marca de partida misceláneo (FR-014). */
+.badgeMiscelaneo {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: var(--color-var-revision-en-surtido-amarillo);
+  color: var(--color-negro);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Aviso de las partidas negadas del código (FR-017).
+   `--color-estatus-negado` es el rosa de fondo del chip, no sirve como color de texto. */
+.negado {
+  margin: 0;
+  overflow: hidden;
+  color: var(--color-secondary-rojo-300);
+  font: var(--font-b2-body);
+  line-height: normal;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
