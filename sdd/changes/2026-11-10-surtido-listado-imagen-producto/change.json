@@ -4,10 +4,11 @@
   "title": "Imagen del producto en el listado de surtido V2",
   "kind": "feature",
   "intensity": "standard",
-  "status": "specified",
+  "status": "planned",
   "created": "2026-11-10",
   "capabilities": [
-    "surtido-listado"
+    "surtido-listado",
+    "catalogo-bandera-sucursal"
   ],
   "repos": [
     "frontend"
@@ -15,12 +16,18 @@
   "owner": "carlos.marquez",
   "reviewers": {
     "P": "carlos.marquez",
-    "A": "",
-    "Q": ""
+    "A": "angel",
+    "Q": "isaai"
   },
   "gates": {
-    "P": null,
-    "A": null,
+    "P": {
+      "by": "carlos.marquez (Producto)",
+      "at": "2026-11-11T16:40:14.957Z"
+    },
+    "A": {
+      "by": "angel",
+      "at": "2026-11-11T18:23:46.382Z"
+    },
     "Q": null,
     "D": null
   },
@@ -34,7 +41,15 @@
     {
       "status": "specified",
       "at": "2026-11-10T17:29:45.388Z"
+    },
+    {
+      "status": "designed",
+      "at": "2026-11-11T18:18:34.172Z"
+    },
+    {
+      "status": "planned",
+      "at": "2026-11-11T18:37:12.113Z"
     }
   ],
-  "updated": "2026-11-10T17:29:45.720Z"
+  "updated": "2026-11-11T18:37:12.113Z"
 }
