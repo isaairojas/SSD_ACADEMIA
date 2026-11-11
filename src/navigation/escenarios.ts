@@ -76,6 +76,37 @@ function promocionIncompleta(): RondaState {
   });
 }
 
+/**
+ * 1458000 completo, 0607006 parcial, 6200404 negado y el resto pendiente.
+ * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Imagen del producto en el listado.
+ */
+function cuatroEstados(): RondaState {
+  return retocar(estadoInicial(), {
+    0: (p) => {
+      if (p.codigo === '1458000') return completar(p);
+      if (p.codigo === '0607006') return { ...p, surtido: 1 };
+      return p;
+    },
+    1: (p) => (p.codigo === '6200404' ? { ...p, motivoNegacion: 'Sin existencia' } : p),
+  });
+}
+
+/** SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Producto sin imagen en el listado. */
+function sinImagen(): RondaState {
+  return retocar(estadoInicial(), {
+    0: (p) => (p.codigo === '1458000' ? { ...p, imagen: undefined } : p),
+  });
+}
+
+const IMAGEN_INEXISTENTE = 'producto-inexistente.jpg';
+
+/** SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Producto sin imagen en el listado. */
+function imagenRota(): RondaState {
+  return retocar(estadoInicial(), {
+    1: (p) => (p.codigo === '6200404' ? { ...p, imagen: IMAGEN_INEXISTENTE } : p),
+  });
+}
+
 export const ESCENARIOS: Record<string, Semilla> = {
   /** Toma de tarea (ronda recién asignada, 3 pedidos pendientes). */
   tareas: { etapa: 'tareas' },
@@ -106,6 +137,15 @@ export const ESCENARIOS: Record<string, Semilla> = {
 
   /** Promoción AxB incompleta en el 100002: bloquea el cierre de la ronda. */
   promocion: { etapa: 'surtido', ronda: promocionIncompleta() },
+
+  /** Pendiente, parcial, completo y negado a la vez, con la bandera encendida. */
+  'cuatro-estados': { etapa: 'surtido', ronda: cuatroEstados() },
+
+  /** El relevador 1458000 sin imagen registrada. */
+  'sin-imagen': { etapa: 'surtido', ronda: sinImagen() },
+
+  /** La imagen de 6200404 apunta a una URL inexistente. */
+  'imagen-rota': { etapa: 'surtido', ronda: imagenRota() },
 };
 
 export function idEscenario(search: string = window.location.search): string | null {

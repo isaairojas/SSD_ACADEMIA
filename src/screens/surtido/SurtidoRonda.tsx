@@ -26,6 +26,7 @@ import { ScanInput, type ScanInputHandle } from '@ds/components/molecules/ScanIn
 import { Divider } from '@ds/components/atoms/Divider/Divider';
 import { Button } from '@ds/components/atoms/Button/Button';
 import { leerCodigo } from '../../domain/codigos';
+import { resolverImagenListadoActiva } from '../../domain/configMultiorden';
 import { sonar } from '../../domain/sonidos';
 import {
   AVISOS,
@@ -52,7 +53,7 @@ import styles from './SurtidoRonda.module.css';
 
 export function SurtidoRonda() {
   const navigate = useNavigate();
-  const { ronda, dispatch, mostrarToast, ultimoEscaneo, setUltimoEscaneo } = useStore();
+  const { ronda, dispatch, mostrarToast, ultimoEscaneo, setUltimoEscaneo, config } = useStore();
   const scanRef = useRef<ScanInputHandle>(null);
   const [capturando, setCapturando] = useState<string | null>(null);
   const [transicion, setTransicion] = useState<Pedido | null>(null);
@@ -69,6 +70,8 @@ export function SurtidoRonda() {
   const promoAbierta = useRef(false);
 
   const productos = productosVista(ronda.ronda);
+  // SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Activación de la imagen por sucursal.
+  const imagenListadoActiva = resolverImagenListadoActiva(config);
   const c = conteosRonda(ronda.ronda);
   const idxActual = pedidoActualIdx(ronda.ronda);
   /**
@@ -214,6 +217,7 @@ export function SurtidoRonda() {
               <ProductoRondaRow
                 producto={v}
                 marcado={ultimoEscaneo?.codigo === v.codigo}
+                mostrarImagen={imagenListadoActiva}
                 onClick={() => navigate(`/detalle/${v.codigo}`)}
               />
             </div>

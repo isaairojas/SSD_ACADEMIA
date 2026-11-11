@@ -48,3 +48,50 @@ Comprobaciones manuales pendientes: T014 (`reiniciar` conserva el registro) y T0
 
 ## Actualización · 2026-11-11 · línea base con Node 22
 Instalé nvm-windows 1.2.2 y Node 22.23.5. Con ese Node, `npm run test:domain` pasa 33 de 33 pruebas, todas de antes de este cambio. El fallo era del entorno. T001 queda cerrada con 33 pruebas de dominio previas.
+
+---
+
+# Lote 2 · T020, T022, T030, T031, T040, T041 · 2026-11-11
+- Aprobación del plan: «adelante», Juanito Alcachofaz (Product Engineer).
+
+## Decisiones tomadas al aprobar el plan
+| # | Decisión |
+| --- | --- |
+| P1 | `bxs-package.svg` es blanco al 15 % sobre la tarjeta blanca y no se veía. Se hace visible con `-webkit-filter: brightness(0); filter: brightness(0)`. No hay asset nuevo ni se toca el design system. |
+| AP1 | Se tocan los archivos compartidos `escenarios.ts` y `EscenariosPanel.tsx`. |
+| AP2 | `.miniatura` va debajo del comentario de la línea 26 de `ProductoRondaRow.module.css`, sin editarlo. |
+| AP3 | Textos del panel de demo: «Imagen en los cuatro estados», «Producto sin imagen» e «Imagen que no carga». |
+| AP4 | Códigos de demo: completo 1458000, parcial 0607006 y negado 6200404; sin imagen 1458000; imagen rota en 6200404 (`producto-inexistente.jpg`). |
+
+## Archivos tocados
+- `src/screens/surtido/ProductoRondaRow.tsx` y `ProductoRondaRow.module.css`: miniatura de 60×60 con los estados cargando, cargada y error. Si falla, no se reintenta. Con la bandera apagada no se dibuja nada.
+- `src/screens/surtido/SurtidoRonda.tsx`: `resolverImagenListadoActiva(config)` se pasa a la fila como `mostrarImagen`.
+- `src/navigation/escenarios.ts` y `EscenariosPanel.tsx`: escenarios `cuatro-estados`, `sin-imagen` e `imagen-rota`.
+
+## Verificación (Node 22.23.5)
+- `npm run typecheck`: verde.
+- `npm run test:domain`: 33 de 33.
+- `npm run build`: verde; el CSS conserva `-webkit-filter`.
+- `npm run sdd:check`: 0 errores y la advertencia previa.
+- El proyecto no tiene script de lint.
+
+## Verificación manual pendiente (360 px; en dev y en preview)
+1. T020 · `?escenario=inicial#/surtido`: la miniatura está a la izquierda y centrada; sin scroll horizontal. Riesgo: `.ubicacion` (`nowrap`) puede desbordar.
+2. T022 · `?escenario=cuatro-estados#/surtido`: las imágenes no se atenúan y el estado se sigue leyendo.
+3. T030 · `?escenario=sin-imagen#/surtido`: el icono gris claro es visible, sin texto, y se ven los datos.
+4. T031 · `?escenario=imagen-rota#/surtido`: aparece el icono; el resto conserva su imagen; hay una sola petición a `producto-inexistente.jpg`; el detalle muestra la imagen rota (hallazgo).
+5. T040 · Slow 3G y «Disable cache», entrando por `?escenario=tareas#/tareas`: el icono se ve hasta que carga la foto, las filas no se mueven y se puede abrir el detalle durante la carga.
+6. T041 · Slow 3G: escanear la etiqueta de 0607006 (`CodigosCheatsheet`) valida igual y la fila sigue con el icono hasta que llega su foto.
+7. Zebra (chrome ≥ 49): el icono se ve (`-webkit-filter`) y `object-fit` funciona.
+8. Satisfechas por construcción, sin verificar: T060 y T061 (pulsar la miniatura o el icono abre el detalle) y T051/T070 (con la bandera apagada no hay caja).
+
+## Desviaciones (no corregidas)
+- CMP-01: manda el precedente del simulador.
+- STY-03, UXE-01 y A11-03: decididas; quedan como hallazgo.
+- Icono blanco resuelto con `filter`: queda como hallazgo para Diseño.
+- STY-01 previo: hex `#343434` en `ProductSummary.module.css:65`.
+
+## Observaciones no aplicadas (I1)
+- Comentarios desactualizados en `SurtidoRonda.tsx:4` y en la línea 26 del CSS (los revisa T900).
+- Ids duplicados entre `escenarios.ts` y `EscenariosPanel.tsx`.
+- El estado de la miniatura no se reinicia si `imagen` cambia con la fila montada (en la demo no pasa).

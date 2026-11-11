@@ -9,7 +9,9 @@
  * - Chip "Mismo cliente" cuando los pedidos que lo necesitan comparten cliente.
  * El desglose sustituye al badge "En N pedidos". No se incorporó al design-system compartido.
  */
+import { useState } from 'react';
 import { Chip } from '@ds/components/atoms/Chip/Chip';
+import iconoProducto from '@assets/illustrations/bxs-package.svg';
 import { statusProducto, ubicacionLegible, type Presencia, type ProductoVista } from '../../domain/ronda';
 import { letraPedido } from './Contenedores';
 import styles from './ProductoRondaRow.module.css';
@@ -18,6 +20,8 @@ type Props = {
   producto: ProductoVista;
   /** Último producto escaneado: fondo azul claro, como el resaltado de Revision-HH-v2. */
   marcado?: boolean;
+  /** SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Imagen del producto en el listado. */
+  mostrarImagen?: boolean;
   onClick?: () => void;
 };
 
@@ -31,7 +35,31 @@ const claseTag = (p: Presencia) =>
         ? styles.tagParcial
         : '';
 
-export function ProductoRondaRow({ producto: v, marcado, onClick }: Props) {
+/**
+ * Sin imagen, mientras carga o si falla, el icono genérico ocupa la misma caja. Tras un error no se
+ * reintenta mientras la fila siga montada (Arquitectura, 2026-11-11: tráfico en red móvil).
+ * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Producto sin imagen en el listado ·
+ * Requirement: Listado utilizable mientras cargan las imágenes.
+ */
+function Miniatura({ imagen }: { imagen?: string }) {
+  const [carga, setCarga] = useState<'cargando' | 'cargada' | 'error'>('cargando');
+  return (
+    <div className={styles.miniatura}>
+      {(!imagen || carga !== 'cargada') && <img src={iconoProducto} alt="" className={styles.iconoGenerico} />}
+      {imagen && carga !== 'error' && (
+        <img
+          src={imagen}
+          alt=""
+          className={carga === 'cargada' ? undefined : styles.imagenCargando}
+          onLoad={() => setCarga('cargada')}
+          onError={() => setCarga('error')}
+        />
+      )}
+    </div>
+  );
+}
+
+export function ProductoRondaRow({ producto: v, marcado, mostrarImagen, onClick }: Props) {
   const status = statusProducto(v);
   const enVariosPedidos = v.presencias.length > 1;
   const clientesUnicos = new Set(v.presencias.map((p) => p.cliente.id));
@@ -47,6 +75,7 @@ export function ProductoRondaRow({ producto: v, marcado, onClick }: Props) {
       onClick={onClick}
       disabled={!onClick}
     >
+      {mostrarImagen && <Miniatura imagen={v.imagen} />}
       <div className={styles.content}>
         <div className={styles.top}>
           <div className={styles.codigoLinea}>
