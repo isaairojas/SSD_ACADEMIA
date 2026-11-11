@@ -2,6 +2,7 @@
  * Escenarios de demo. ?escenario=<id> siembra el store al arrancar.
  * Mantiene el patrón del proyecto base: la semilla se lee una vez en main.tsx.
  */
+import type { ConfigMultiorden } from '../domain/configMultiorden';
 import { estadoInicial, type PartidaPedido, type RondaState } from '../domain/ronda';
 import type { Semilla } from '../store/AppStore';
 
@@ -111,7 +112,13 @@ export function idEscenario(search: string = window.location.search): string | n
   return new URLSearchParams(search).get('escenario');
 }
 
-export function semillaDesdeUrl(): Semilla | undefined {
+/**
+ * Toda la demo arranca con la bandera encendida; un escenario con su propia `config` la sobrescribe.
+ * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Activación de la imagen por sucursal.
+ */
+const BANDERA_ENCENDIDA: Partial<ConfigMultiorden> = { imagenListadoActiva: true };
+
+export function semillaDesdeUrl(): Semilla {
   const id = idEscenario();
-  return id ? ESCENARIOS[id] : undefined;
+  return { config: BANDERA_ENCENDIDA, ...(id ? ESCENARIOS[id] : undefined) };
 }

@@ -53,8 +53,11 @@ export type PartidaPedido = {
   miscelaneo: boolean;
   /** Motivo por el que el surtidor negó la partida. null = sin negar. */
   motivoNegacion: string | null;
-  /** Imagen del producto (ruta relativa importable). */
-  imagen: string;
+  /**
+   * Imagen del producto (ruta relativa importable). Opcional: sin imagen el listado muestra el icono genérico.
+   * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Producto sin imagen en el listado.
+   */
+  imagen?: string;
   /** Promoción AxB a la que pertenece la partida en su pedido. null = sin promoción. */
   promocion: Promocion | null;
 };
@@ -242,7 +245,7 @@ export type Presencia = {
 export type ProductoVista = {
   codigo: string;
   descripcion: string;
-  imagen: string;
+  imagen?: string;
   ubicacion: Ubicacion;
   existencia: number;
   miscelaneo: boolean;

@@ -149,7 +149,7 @@ export function DetalleProducto() {
       <ContentPanel title="Detalle del producto" bottom={124} scroll>
         <div className={styles.body}>
           <div className={styles.datos}>
-            <ProductSummary foto={vista.imagen} codigo={vista.codigo} descripcion={vista.descripcion} photoStyle="framed" />
+            <ProductSummary foto={vista.imagen ?? ''} codigo={vista.codigo} descripcion={vista.descripcion} photoStyle="framed" />
             <div className={styles.grid}>
               <div className={styles.pair}>
                 <LabeledField label="Ubicación" value={planta} />

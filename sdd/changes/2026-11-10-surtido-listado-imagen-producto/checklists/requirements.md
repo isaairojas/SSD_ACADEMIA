@@ -37,4 +37,4 @@
 - [x] El icono genérico (sin imagen, imagen que no carga, imagen cargando) es el mismo en los tres casos y se distingue de una imagen real de producto. — evidencia [parcial]: que es el mismo se deduce de Req 2 y Req 3. — falta: escribir que se distingue de una foto real.
 - [x] Existe una forma acordada de obtener la línea base y medir SC-001 (entradas al detalle solo para ver el producto). — evidencia [no cumple]: el intent dice que no hay línea base medida.
 
-Revisado por: <nombre> · Fecha: <fecha>
+Revisado por: <Mario> · Fecha: <11/11/2026>
