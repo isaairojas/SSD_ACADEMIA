@@ -1,7 +1,7 @@
 /**
  * Pantalla principal del surtido multi-orden.
  * Lista agregada por código: una fila por producto único de la ronda, con
- * imagen, badge "En N pedidos" cuando aplica y chip "Mismo cliente".
+ * imagen solo con `Bandera_ImagenListadoEnHH` activa, desglose por contenedor y chip "Mismo cliente".
  * El escaneo se dirige al pedido pendiente con menor orden que todavía lo necesite.
  *
  * Esta pantalla es el único punto que detecta el cierre de un pedido (FR-019) y el
@@ -53,7 +53,7 @@ import styles from './SurtidoRonda.module.css';
 
 export function SurtidoRonda() {
   const navigate = useNavigate();
-  const { ronda, dispatch, mostrarToast, ultimoEscaneo, setUltimoEscaneo, config } = useStore();
+  const { ronda, dispatch, mostrarToast, ultimoEscaneo, setUltimoEscaneo, config, abrirEntradaDetalle } = useStore();
   const scanRef = useRef<ScanInputHandle>(null);
   const [capturando, setCapturando] = useState<string | null>(null);
   const [transicion, setTransicion] = useState<Pedido | null>(null);
@@ -218,7 +218,11 @@ export function SurtidoRonda() {
                 producto={v}
                 marcado={ultimoEscaneo?.codigo === v.codigo}
                 mostrarImagen={imagenListadoActiva}
-                onClick={() => navigate(`/detalle/${v.codigo}`)}
+                onClick={() => {
+                  // SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Registro de entradas al detalle desde el listado.
+                  abrirEntradaDetalle(v.codigo);
+                  navigate(`/detalle/${v.codigo}`);
+                }}
               />
             </div>
           ))}

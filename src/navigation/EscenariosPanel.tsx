@@ -140,6 +140,13 @@ const ESCENARIOS: Escenario[] = [
       'El resto del listado conserva sus imágenes; el detalle muestra la imagen rota (hallazgo).',
     ],
   },
+  {
+    id: 'bandera-apagada',
+    titulo: 'Bandera de imagen apagada',
+    descripcion: 'Sucursal sin la bandera de imagen en el listado: se ve como antes del cambio.',
+    ruta: '/surtido',
+    reglas: ['Sin imagen, recuadro ni icono genérico.', 'Mismo orden y datos que "Surtido — ronda vacía".'],
+  },
 ];
 
 /**

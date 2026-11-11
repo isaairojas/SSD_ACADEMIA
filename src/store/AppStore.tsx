@@ -1,7 +1,8 @@
 /**
  * Estado global del surtido multi-orden: ronda en curso + toasts.
  */
-import { createContext, useCallback, useContext, useMemo, useReducer, useState, type Dispatch, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useReducer, useState, type Dispatch, type ReactNode } from 'react';
+import { useLocation } from 'react-router-dom';
 import { estadoInicial, rondaReducer, type RondaAction, type RondaState } from '../domain/ronda';
 import { CONFIG_MULTIORDEN_DEFAULT, resolverImagenListadoActiva, type ConfigMultiorden } from '../domain/configMultiorden';
 import {
@@ -89,6 +90,14 @@ export function AppStoreProvider({ children, semilla }: { children: ReactNode; s
     const ahora = Date.now();
     setEntradasDetalle((r) => cerrarEntrada(r, ahora));
   }, []);
+
+  // Se cierra al salir de la ruta del detalle y no al desmontar `DetalleProducto`: `StrictMode` lo
+  // desmonta al montarlo. Cubre volver, `replace`, atrás del navegador y cualquier otra ruta.
+  // SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Registro de entradas al detalle desde el listado.
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (!pathname.startsWith('/detalle/')) cerrarEntradaDetalle();
+  }, [pathname, cerrarEntradaDetalle]);
 
   const value = useMemo(
     () => ({

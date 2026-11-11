@@ -146,6 +146,13 @@ export const ESCENARIOS: Record<string, Semilla> = {
 
   /** La imagen de 6200404 apunta a una URL inexistente. */
   'imagen-rota': { etapa: 'surtido', ronda: imagenRota() },
+
+  /**
+   * Sucursal sin la bandera: el listado se ve como antes del cambio.
+   * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Activación de la imagen por sucursal ·
+   * Requirement: Bandera de imagen en el listado de surtido.
+   */
+  'bandera-apagada': { etapa: 'surtido', config: { imagenListadoActiva: false } },
 };
 
 export function idEscenario(search: string = window.location.search): string | null {

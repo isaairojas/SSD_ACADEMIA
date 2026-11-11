@@ -95,3 +95,111 @@ Instalé nvm-windows 1.2.2 y Node 22.23.5. Con ese Node, `npm run test:domain` p
 - Comentarios desactualizados en `SurtidoRonda.tsx:4` y en la línea 26 del CSS (los revisa T900).
 - Ids duplicados entre `escenarios.ts` y `EscenariosPanel.tsx`.
 - El estado de la miniatura no se reinicia si `imagen` cambia con la fila montada (en la demo no pasa).
+
+---
+
+## Hallazgos para retro
+
+### H-01 · Botones del modal alineados a la derecha
+- **Severidad:** WARNING (visual, no bloquea el flujo)
+- **Dónde:** modal que aparece al escanear un código en el listado de surtido (`#/surtido`). Se vio durante la verificación manual de T041 (Juanito Alcachofaz, 2026-11-11).
+- **Evidencia:**
+  - Los modales del surtido se arman en `src/screens/surtido/overlays/SurtidoModals.tsx` sobre `src/design-system/components/organisms/ModalSheet/` (`ModalSheet.module.css`, contenedores flex en columna en las líneas 30 y 65).
+  - Falta confirmar qué regla CSS alinea los botones a la derecha.
+  - La referencia del borrador a `src/components/ConfirmDialog/ConfirmDialog.tsx:42` no existe en este repo: no hay carpeta `src/components/` ni componente `ConfirmDialog`.
+- **Esperado:** Cancelar a la izquierda y Aceptar a la derecha, como acción de diálogo según el estándar front-end. Está pendiente citar el ID de la regla.
+- **Actual:** ambos botones están alineados a la derecha.
+- **Alcance:** probablemente todos los modales que usan `ModalSheet`. No lo introdujo este cambio: ningún commit del cambio toca `SurtidoModals.tsx` ni `ModalSheet`, así que el problema ya existía.
+- **Clasificación tentativa:**
+  - Implementación, si el estándar define la alineación y no se aplicó.
+  - *Spec gap*, si la regla no está escrita ni en la spec ni en el estándar.
+- **Estado:** no se corrige (P3: fuera de alcance; `src/design-system/` no se toca). Queda registrado para la retro.
+- **Mejora propuesta:** añadir a la checklist de UI una verificación de la alineación de las acciones en los diálogos.
+
+---
+
+# Lote 3 · T050, T051, T060, T061, T070–T073 · 2026-11-11
+- Aprobación del plan: «adelante», Juanito Alcachofaz (Product Engineer). Decisiones: el escenario «bandera apagada» usa la ronda inicial; los textos del panel son los propuestos; no se añade escenario de bandera encendida (T073 se cubre con `inicial`).
+
+## Archivos tocados
+- `tests/domain/entradasDetalle.test.mjs` (nuevo): 5 pruebas.
+  - T050: `productosVista` y `conteosRonda` dan lo mismo con y sin imagen.
+  - T072: `resolverImagenListadoActiva` devuelve `true` con la bandera activa y `false` con la config por defecto, `null`, `undefined` y `{}`.
+- `package.json`: `test:domain` incluye el archivo nuevo.
+- `src/navigation/escenarios.ts` y `EscenariosPanel.tsx`: escenario `bandera-apagada` (T071).
+- T051, T060, T061, T070 y T073 se cumplen por construcción, sin código.
+
+## Verificación (Node 22.23.5)
+- `npm run typecheck`: verde.
+- `npm run test:domain`: **38/38**.
+- `npm run build`: verde.
+- `npm run sdd:check`: 0 errores.
+
+## Cobertura P4
+«Guía por voz sin cambios», «Falla al consultar la bandera» y «Falla al consultar la bandera de imagen» quedan **sin prueba**. T050 y T072 son evidencia sustituta; es deuda para Q.
+
+## Verificación manual pendiente (360 px)
+- T060 · `?escenario=inicial#/surtido`: tocar la miniatura de 2012000 abre su detalle y la imagen no se amplía.
+- T061 · `?escenario=sin-imagen#/surtido` (1458000) y `?escenario=imagen-rota#/surtido` (6200404): tocar el icono abre el detalle.
+- T070 / T071 · `?escenario=bandera-apagada#/surtido`: no hay imagen, recuadro ni icono.
+- T051 · comparar `bandera-apagada` con `inicial` y con GitHub Pages (`origin/main`, anterior al cambio): mismo orden y mismos datos.
+- T073 · `?escenario=inicial#/surtido`: se ven las imágenes, con sucursal `'Centro'`.
+
+## Hallazgos para retro
+- **H-02:** en `ProductoRondaRow.tsx:79` hay un `<div>` dentro de un `<button>`, que es HTML no válido. Ya existía antes del cambio y la `Miniatura` repite el patrón. Severidad: SUGGESTION.
+- **I1:** la `<img>` dentro del botón se puede arrastrar con ratón de escritorio. No aplica en la HH.
+
+---
+
+# Lote 4 · T080–T083, T900, T901 · 2026-11-11
+- Aprobación del plan: «adelante», Juanito Alcachofaz (Product Engineer).
+- Decisiones:
+  - Toda cantidad aceptada cuenta como captura; los rechazos no.
+  - La verificación del registro se hace con React DevTools, sin código nuevo.
+  - Se reescribe `SurtidoRonda.tsx:4`.
+  - `EscenariosPanel.tsx` no lleva leyendas.
+  - Se añade la prueba «abrir otro código cierra el anterior».
+
+## Archivos tocados
+- `tests/domain/entradasDetalle.test.mjs` (T080): 10 pruebas del registro, más `pedidoDeEntrada`.
+- `src/screens/surtido/SurtidoRonda.tsx`:
+  - T081: la entrada se abre en el clic de la tarjeta.
+  - T900: se reescribe el comentario de la línea 4.
+- `src/screens/surtido/DetalleProducto.tsx`:
+  - T082: marca la captura en las cantidades aceptadas y la negación al negar.
+  - T900: se añaden las leyendas.
+- `src/store/AppStore.tsx` (T083): cierra la entrada al salir de `/detalle/` según `pathname`, por `StrictMode`.
+
+## Verificación (Node 22.23.5)
+- `npm run typecheck`: verde.
+- `npm run test:domain`: **48/48**.
+- `npm run build`: verde.
+- `npm run sdd:check`: 0 errores.
+- grep de la leyenda: presente.
+- Sin `any`, `@ts-ignore`, `console.log` ni `catch {}`.
+- No hay script de lint.
+
+## Verificación manual pendiente (React DevTools → `AppStoreProvider` → `entradasDetalle`)
+- **T081:** al tocar 1394010 en `inicial` se abre una entrada con `Centro`, el pedido `100001` e `imagenListadoActiva: true`.
+- **T083:** salir con «Regresar» o con atrás del navegador deja una sola entrada cerrada; recargar dentro del detalle no crea ninguna.
+- **T082:** con stepper la entrada queda en `captura`; con captura y después negación, en `negacion`; con un escaneo rechazado, en `ninguna`.
+- **Línea base:** en `bandera-apagada` la entrada registra `imagenListadoActiva: false`.
+- **T014:** `reiniciar` sin recargar conserva el registro.
+- **T901:** revisión en Zebra (chrome ≥ 49): `-webkit-filter` y `object-fit`.
+
+## Hallazgos finales para verify y retro
+1. A11-03: `alt=""` en la miniatura (`ProductoRondaRow.tsx:48,52`); decidido por Arquitectura.
+2. El detalle con imagen ausente o rota muestra el recuadro vacío o roto (`DetalleProducto.tsx:160`); aceptado para la demo.
+3. La tarjeta no muestra la descripción; desviación del simulador (clarificación #11).
+4. H-01: los botones del modal están alineados a la derecha; ya existía. Es un vacío del estándar o de la spec, no un fallo de implementación (ninguna regla v0.5 fija la alineación).
+5. H-02: `<div>` dentro de `<button>`; HTML inválido que ya existía; SUGGESTION.
+6. Del proceso:
+   - T081 se marcó `[x]` sin estar implementada; VS Code sobrescribió `tasks.md` con una copia vieja. Ya se corrigió.
+   - El registro no tiene interfaz.
+   - No hay script de lint.
+   - Hay que fijar Node ≥ 22.18 para `test:domain`.
+7. I1:
+   - `ProductoRondaRow.module.css:1` dice «8 px»: es un comentario desactualizado.
+   - La cabecera de `AppStore.tsx:1-3` está desactualizada.
+   - Al pasar de `/detalle/A` a `/detalle/B` por URL, A no se cierra.
+   - Los ids están duplicados en `EscenariosPanel`.
