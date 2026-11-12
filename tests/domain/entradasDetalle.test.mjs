@@ -24,8 +24,6 @@ const negar = (s, codigo, motivo = 'Sin existencia') => rondaReducer(s, { type: 
  * SDD 2026-11-10-surtido-listado-imagen-producto · Orden y datos del listado sin cambios
  * ---------------------------------------------------------------- */
 
-// Evidencia sustituta de "Guía por voz sin cambios": no cubre ese escenario para P4.
-
 /** 1394010 parcial, 1458000 completo, 6200404 negado y el resto pendiente. */
 const rondaConAvance = () => negar(surtir(surtir(estadoInicial(), '1394010', 11), '1458000', 2), '6200404');
 
@@ -46,17 +44,16 @@ test('con y sin imagen, productosVista da los mismos productos, en el mismo orde
   assert.deepEqual(sin, con.map((v) => ({ ...v, imagen: undefined })));
 });
 
+// SDD 2026-11-10-surtido-listado-imagen-producto · Orden y datos del listado sin cambios · sustituta de Guía por voz sin cambios
 test('conteosRonda es igual con y sin imagen', () => {
   const s = rondaConAvance();
   assert.deepEqual(conteosRonda(sinImagen(s).ronda), conteosRonda(s.ronda));
 });
 
 /* ---------------------------------------------------------------- *
- * SDD 2026-11-10-surtido-listado-imagen-producto · Activación de la imagen por sucursal ·
- * Bandera de imagen en el listado de surtido
+ * SDD 2026-11-10-surtido-listado-imagen-producto · Activación de la imagen por sucursal
+ * SDD 2026-11-10-surtido-listado-imagen-producto · Bandera de imagen en el listado de surtido
  * ---------------------------------------------------------------- */
-
-// Evidencia sustituta de las dos "Falla al consultar la bandera": no cubre esos escenarios para P4.
 
 test('la bandera activa se resuelve como activa', () => {
   assert.equal(resolverImagenListadoActiva({ imagenListadoActiva: true }), true);
@@ -67,6 +64,8 @@ test('por defecto la bandera está inactiva', () => {
   assert.equal(resolverImagenListadoActiva(CONFIG_MULTIORDEN_DEFAULT), false);
 });
 
+// SDD 2026-11-10-surtido-listado-imagen-producto · Activación de la imagen por sucursal · sustituta de Falla al consultar la bandera
+// SDD 2026-11-10-surtido-listado-imagen-producto · Bandera de imagen en el listado de surtido · sustituta de Falla al consultar la bandera de imagen
 test('sin config o sin el campo, la bandera se trata como inactiva', () => {
   assert.equal(resolverImagenListadoActiva(null), false);
   assert.equal(resolverImagenListadoActiva(undefined), false);

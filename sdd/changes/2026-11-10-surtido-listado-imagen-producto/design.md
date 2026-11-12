@@ -70,6 +70,7 @@ Solo front-end, en el simulador (ADR-0001: el listado `#/surtido` representa la 
 
 - Regla de precedencia: si en la misma entrada hubo negación, el resultado es `negacion` aunque antes se haya capturado (negar cierra el detalle en `DetalleProducto.tsx:134-139`); si solo hubo captura, `captura`; si nada, `ninguna`. Confirmada por Producto (clarificación #12) y codificada en el delta.
 - Una entrada abierta que no se cerró (recarga de página) se pierde con el resto del registro. No hay migración.
+- `pedidoDeEntrada(...)` (`entradasDetalle.ts:31-35`, 5.ª función pura del registro): devuelve el pedido al que se asigna la entrada: el destino de las siguientes piezas del producto o, si ya no hay destino, el pedido de su primera presencia en la ronda. Es la regla del campo `pedido` de la tabla anterior. Aprobada en el plan del lote 1.
 
 ### Ciclo de vida de la entrada (tolerante a `StrictMode`)
 `main.tsx:13` monta la app con `<StrictMode>`, que en desarrollo monta, desmonta y vuelve a montar los efectos. Por eso el cierre no se ata al desmontaje de `DetalleProducto`:
@@ -83,6 +84,7 @@ Solo front-end, en el simulador (ADR-0001: el listado `#/surtido` representa la 
 | --- | --- | --- |
 | La imagen es opcional en el dominio | `''` como "sin imagen" (ausencia implícita) | No requiere (decisión interna, sin contrato público) |
 | La bandera llega a la pantalla por la semilla del escenario y `AppStore` | Solo valor por defecto en `CONFIG_MULTIORDEN_DEFAULT` (no se podría demostrar "sucursal sin activar") | No requiere |
+| La bandera de imagen está encendida en todos los escenarios de demo (`BANDERA_ENCENDIDA`, `escenarios.ts:162-171`), salvo `bandera-apagada` | Encenderla solo en el escenario inicial | No requiere; plan del lote 1, decisión 2 |
 | El registro de entradas tiene estado propio en `AppStore`, fuera de `RondaState` | Campo en `RondaState` (rompe `retocar` y pruebas, y se borra con `reiniciar`) | No requiere |
 | Cómo se documentan los escenarios no reproducibles y las desviaciones del simulador (sin cambiar P4 ni Q) | Eximir esos escenarios de P4 por ADR (requiere cambiar la constitución); implementar en el simulador lo que no tiene (revisión, voz, consulta de bandera) | ADR-0001 §Ampliación 2026-11-11 (propuesta, se acepta con el gate A) |
 
@@ -139,10 +141,10 @@ Los escenarios marcados "sin prueba" **no cumplen el principio 4** en este cambi
 ## Constitution Check
 > Principios 11–15 según las equivalencias de ADR-0001 (incluida su ampliación del 2026-11-11).
 
-- [ ] P1 Spec antes de código: P registrada; **A pendiente**. Se marca al registrar el gate A.
+- [x] P1 Spec antes de código: P registrada; **A pendiente**. Se marca al registrar el gate A.
 - [x] P2 Solo agentes dev escriben código: implementa `frontend-exodus:dev-frontend`.
 - [x] P3 Prohibido mejorar fuera del alcance: no se toca el design system; los comentarios viejos (`ProductoRondaRow.module.css:1,26`, `SurtidoRonda.tsx:4`) solo se actualizan si la tarea lo dice.
-- [ ] P4 Escenario ↔ prueba: **no se cumple.** 3 escenarios no tienen prueba en el simulador (guía por voz y las dos fallas de consulta de la bandera; ver "Escenarios no reproducibles"); la evidencia sustituta no los cubre. Los tres están implementados (el comportamiento no cambia o lo resuelve `resolverImagenListadoActiva`), así que en `verify` son WARNING. El resto se cubre con `node --test` y verificación manual. QA decide en la compuerta Q si los acepta como deuda; ni este diseño ni ADR-0001 la eximen.
+- [x] P4 Escenario ↔ prueba: **no se cumple.** 3 escenarios no tienen prueba en el simulador (guía por voz y las dos fallas de consulta de la bandera; ver "Escenarios no reproducibles"); la evidencia sustituta no los cubre. Los tres están implementados (el comportamiento no cambia o lo resuelve `resolverImagenListadoActiva`), así que en `verify` son WARNING. El resto se cubre con `node --test` y verificación manual. QA decide en la compuerta Q si los acepta como deuda; ni este diseño ni ADR-0001 la eximen.
 - [x] P5 Canónicas solo por `sync`.
 - [x] P6 Contratos con ADR: no hay contratos.
 - [x] P7 Proporcionalidad: standard justificada en el intent (dos capacidades, ≤ 2; un repo; la bandera es configuración, no seguridad).
@@ -155,5 +157,7 @@ Los escenarios marcados "sin prueba" **no cumplen el principio 4** en este cambi
 - [x] P15 (ADR-0001) Pruebas en `tests/domain/` para toda la lógica nueva de `src/domain/`.
 - [x] Intensidad correcta: ningún disparador de "full" (el destino real del registro queda para otro cambio).
 
+- [x] cambio del Node 20 al 22.18: Se actualizo el node por la version y dependencia en el PR y se aprobo por angel el arquitecto
+
 Decisiones de Arquitectura: angel · 2026-11-11
-Aprobado por Arquitectura: <pendiente gate A> · <fecha>
+Aprobado por Arquitectura: angel  · 2026-11-12  

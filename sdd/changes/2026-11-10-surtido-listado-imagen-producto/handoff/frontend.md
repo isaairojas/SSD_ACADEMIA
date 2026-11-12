@@ -120,3 +120,10 @@ El agente no toca `../tasks.md` ni `CLAUDE.md`, ni hace git.
 | Archivos tocados + verificación + reglas aplicadas | `tasks.md` (`[x]`), `verify.md` |
 | Observaciones no aplicadas (I1) | `retro.md` / nuevo cambio si merece la pena |
 | Desviaciones del estándar y vacíos de la skill | `verify.md` + `harness-backlog.md` |
+
+## Pruebas a generar
+Detalle completo en `../tests-plan.md`. Filas de este repo (frontend) que requieren código de prueba:
+- **Dominio (`node --test`, `tests/domain/entradasDetalle.test.mjs`)**: ya generadas (T050, T072, T080). Cubren la equivalencia con y sin imagen, `resolverImagenListadoActiva` y el registro de entradas (abrir, captura, negación, idempotencia, `pedidoDeEntrada`).
+- **Evidencia sustituta, sin prueba en P4 (deuda aceptada por QA)**: Guía por voz sin cambios; Falla al consultar la bandera (ambas capacidades). Pendiente T902: leyenda `SDD <id> · <Requirement> · sustituta de <Scenario>`.
+- **Sin prueba automática (M1)**: integración UI ↔ store del registro; propuesta de extraer el predicado de ruta de detalle a `src/domain/`.
+- **Manuales**: T020–T022, T030–T031, T040–T041, T051, T060–T061, T070–T073, T081–T083 y T901, según `../verify.md`.

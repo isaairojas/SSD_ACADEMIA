@@ -18,7 +18,7 @@ La constitución v1.1 describe la app Expo (Controller/Screen, `src/http/`, `src
 `verify` revisa estas equivalencias en lugar del texto literal de los principios 11 a 15. Cuando el cambio se lleve a la app real, aplican los principios originales.
 
 ## Ampliación 2026-11-11 · Escenarios no reproducibles y desviaciones del simulador
-- **Estado:** propuesta (se acepta con el gate A de `2026-11-10-surtido-listado-imagen-producto`)
+- **Estado:** aceptada (gate A de `2026-11-10-surtido-listado-imagen-producto`, angel, 2026-11-11)
 - **Fecha:** 2026-11-11
 - **Decide:** Arquitectura (angel)
 - **Origen:** `sdd/changes/2026-11-10-surtido-listado-imagen-producto/design.md`, secciones "Escenarios no reproducibles en el simulador" y "Modelo de datos".

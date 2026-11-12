@@ -4,7 +4,7 @@
   "title": "Imagen del producto en el listado de surtido V2",
   "kind": "feature",
   "intensity": "standard",
-  "status": "planned",
+  "status": "converged",
   "created": "2026-11-10",
   "capabilities": [
     "surtido-listado",
@@ -28,11 +28,17 @@
       "by": "angel",
       "at": "2026-11-11T18:23:46.382Z"
     },
-    "Q": null,
+    "Q": {
+      "by": "isaai",
+      "at": "2026-11-12T17:59:29.337Z"
+    },
     "D": null
   },
   "synced": false,
-  "metrics": {},
+  "metrics": {
+    "verify_critical": 0,
+    "converge_passes": 2
+  },
   "history": [
     {
       "status": "intent",
@@ -49,7 +55,19 @@
     {
       "status": "planned",
       "at": "2026-11-11T18:37:12.113Z"
+    },
+    {
+      "status": "verifying",
+      "at": "2026-11-11T23:44:31.427Z"
+    },
+    {
+      "status": "verifying",
+      "at": "2026-11-12T17:13:58.333Z"
+    },
+    {
+      "status": "converged",
+      "at": "2026-11-12T17:59:13.880Z"
     }
   ],
-  "updated": "2026-11-11T18:37:12.113Z"
+  "updated": "2026-11-12T17:59:29.339Z"
 }
