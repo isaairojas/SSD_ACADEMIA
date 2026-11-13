@@ -113,6 +113,40 @@ const ESCENARIOS: Escenario[] = [
       '"Eliminar productos" + escanear un código de la promoción la niega solo en el 100002.',
     ],
   },
+  {
+    id: 'cuatro-estados',
+    titulo: 'Imagen en los cuatro estados',
+    descripcion: '1458000 completo, 0607006 parcial, 6200404 negado y el resto pendiente.',
+    ruta: '/surtido',
+    reglas: [
+      'Los cuatro productos muestran su imagen sin atenuar.',
+      'El estado se sigue leyendo en el chip y el desglose.',
+    ],
+  },
+  {
+    id: 'sin-imagen',
+    titulo: 'Producto sin imagen',
+    descripcion: 'El relevador 1458000 no tiene imagen registrada.',
+    ruta: '/surtido',
+    reglas: ['En su lugar sale el icono genérico, sin texto.', 'Pulsar el icono abre el detalle.'],
+  },
+  {
+    id: 'imagen-rota',
+    titulo: 'Imagen que no carga',
+    descripcion: 'La imagen de 6200404 apunta a una URL inexistente.',
+    ruta: '/surtido',
+    reglas: [
+      'Sale el icono genérico y no se reintenta.',
+      'El resto del listado conserva sus imágenes; el detalle muestra la imagen rota (hallazgo).',
+    ],
+  },
+  {
+    id: 'bandera-apagada',
+    titulo: 'Bandera de imagen apagada',
+    descripcion: 'Sucursal sin la bandera de imagen en el listado: se ve como antes del cambio.',
+    ruta: '/surtido',
+    reglas: ['Sin imagen, recuadro ni icono genérico.', 'Mismo orden y datos que "Surtido — ronda vacía".'],
+  },
 ];
 
 /**

@@ -29,6 +29,11 @@ export type ConfigMultiorden = {
   maxPartidasPorRonda: number;
   /** Tipos que pueden entrar a multi-orden. Traspasos: `Bandera_MultiordenTraspasos`. */
   tiposPedidoMultiorden: Record<TipoPedido, boolean>;
+  /**
+   * `Bandera_ImagenListadoEnHH`. Inactiva: el listado de surtido se ve como antes del cambio.
+   * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Activación de la imagen por sucursal.
+   */
+  imagenListadoActiva: boolean;
 };
 
 export const CONFIG_MULTIORDEN_DEFAULT: ConfigMultiorden = {
@@ -37,7 +42,16 @@ export const CONFIG_MULTIORDEN_DEFAULT: ConfigMultiorden = {
   validarCodigosCompartidos: true,
   maxPartidasPorRonda: 15,
   tiposPedidoMultiorden: { pedido: true, corporativo: true, traspaso: false },
+  imagenListadoActiva: false,
 };
+
+/**
+ * Sin config (falla al consultar la bandera) o sin el campo, la bandera se trata como inactiva.
+ * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Activación de la imagen por sucursal.
+ */
+export function resolverImagenListadoActiva(config: Partial<ConfigMultiorden> | null | undefined): boolean {
+  return config?.imagenListadoActiva === true;
+}
 
 /*
  * Reglas fijas (no son parámetros), en sdd/changes/multiorden-armado-ronda:

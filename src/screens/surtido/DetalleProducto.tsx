@@ -21,6 +21,14 @@
  * van en gris, como inhabilitados. El chip conserva el color de su estatus (completo en verde).
  * Cuando el surtido pasa el código a otro pedido se avisa con `CambioPedidoModal`.
  *
+ * Registro de entradas (SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Registro de
+ * entradas al detalle desde el listado): toda cantidad aceptada marca la entrada como captura y negar
+ * la marca como negación. La entrada no se cierra aquí sino en el store, al cambiar de ruta, porque
+ * `StrictMode` desmonta esta pantalla al montarla.
+ *
+ * Imagen opcional (SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Imagen del producto
+ * en el listado): sin imagen, `ProductSummary` recibe ''.
+ *
  * El aviso de pedido completado y el cierre de la ronda no se resuelven aquí: los
  * detecta `SurtidoRonda` al volver a la lista, mirando el estado del store.
  */
@@ -65,7 +73,7 @@ const TOAST_CODIGO_DISTINTO = {
 export function DetalleProducto() {
   const { codigo = '' } = useParams();
   const navigate = useNavigate();
-  const { ronda, dispatch, mostrarToast, setUltimoEscaneo } = useStore();
+  const { ronda, dispatch, mostrarToast, setUltimoEscaneo, marcarEntradaDetalle } = useStore();
   const [negando, setNegando] = useState(false);
   const [capturando, setCapturando] = useState(false);
   const [cambio, setCambio] = useState<{ desde: string; hacia: string; ordenHacia: number } | null>(null);
@@ -106,6 +114,7 @@ export function DetalleProducto() {
     const rechazo = evaluarCantidadAbsoluta(partidaDestino, n);
     if (rechazo) return rechazar(rechazo);
     setUltimoEscaneo({ codigo, pedidoId: pedidoDestino.id });
+    marcarEntradaDetalle('captura');
     aplicar({ type: 'fijarSurtido', pedidoId: pedidoDestino.id, codigo, cantidad: n });
   };
 
@@ -115,6 +124,7 @@ export function DetalleProducto() {
     if (!ev.ok) return rechazar(ev.rechazo);
     sonar('ok');
     if (pedidoDestino) setUltimoEscaneo({ codigo, pedidoId: pedidoDestino.id });
+    marcarEntradaDetalle('captura');
     aplicar({ type: 'surtirPorCodigo', codigo, cantidad });
   };
 
@@ -133,6 +143,7 @@ export function DetalleProducto() {
 
   const negar = (motivo: string) => {
     dispatch({ type: 'negar', codigo, motivo });
+    marcarEntradaDetalle('negacion');
     setNegando(false);
     const pedidos = aNegar.map((a) => a.pedidoId).join(', ');
     mostrarToast({ kind: 'error', title: 'Producto negado', message: `${codigo} negado en ${pedidos} por: ${motivo}` });
@@ -149,7 +160,7 @@ export function DetalleProducto() {
       <ContentPanel title="Detalle del producto" bottom={124} scroll>
         <div className={styles.body}>
           <div className={styles.datos}>
-            <ProductSummary foto={vista.imagen} codigo={vista.codigo} descripcion={vista.descripcion} photoStyle="framed" />
+            <ProductSummary foto={vista.imagen ?? ''} codigo={vista.codigo} descripcion={vista.descripcion} photoStyle="framed" />
             <div className={styles.grid}>
               <div className={styles.pair}>
                 <LabeledField label="Ubicación" value={planta} />

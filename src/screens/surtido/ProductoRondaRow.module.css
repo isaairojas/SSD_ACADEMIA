@@ -24,6 +24,36 @@
 }
 
 /* Miniatura sin borde ni fondo (D47 de la referencia) */
+/* SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Imagen del producto en el listado */
+.miniatura {
+  position: relative;
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+}
+
+/* Como la foto de ProductSummary.module.css:35-41 */
+.miniatura img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Se descarga sin verse: el icono ocupa la caja hasta `onLoad`.
+   SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Listado utilizable mientras cargan las imágenes */
+.imagenCargando {
+  visibility: hidden;
+}
+
+/* bxs-package.svg es blanco al 15 %: sobre la tarjeta blanca no se vería. Prefijo a mano para chrome < 53.
+   SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Producto sin imagen en el listado */
+.iconoGenerico {
+  -webkit-filter: brightness(0);
+  filter: brightness(0);
+}
+
 .content {
   display: flex;
   flex: 1 0 0;

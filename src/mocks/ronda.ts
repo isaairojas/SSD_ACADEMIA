@@ -60,7 +60,7 @@ const CATALOGO: Record<string, { descripcion: string }> = {
 
 function p(
   codigo: string,
-  imagen: string,
+  imagen: string | undefined,
   solicitado: number,
   ubicacion: Ubicacion = UBI,
   extras: Extras = {},
@@ -123,6 +123,12 @@ export const RONDA_INICIAL: Ronda = {
 };
 
 export const EMPLEADO = { id: '9029', nombre: 'JUAN ANTONIO GUERRERO MEDINA' };
+
+/**
+ * Sucursal fija de la demo: el simulador no maneja sucursales y el valor no condiciona lógica (P14).
+ * SDD 2026-11-10-surtido-listado-imagen-producto · Requirement: Activación de la imagen por sucursal.
+ */
+export const SUCURSAL_DEMO = 'Centro';
 
 export const TAREA = {
   actividad: 'SURTIR RONDA DE PEDIDOS',
