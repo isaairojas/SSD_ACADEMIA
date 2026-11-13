@@ -83,6 +83,24 @@ Evidencia: `src/views/HomeStack/AssortmentTaskV2/AssortmentTaskController.tsx:26
 - WHEN debe negar un producto con diferencia
 - THEN puede elegir un motivo del catálogo de negación
 
+### Requirement: Bandera de imagen en el listado de surtido
+The system SHALL ofrecer `Bandera_ImagenListadoEnHH` (bandera nueva, nombre propuesto) como bandera por sucursal que gobierna la imagen del producto en el listado de surtido V2 (`surtido-listado`), activa solo para las sucursales donde el servicio de seguridad la reporta habilitada.
+(Origen: clarificaciones #8 y #15)
+(Estado: especificado · implementado solo en el simulador SSD_ACADEMIA · pendiente en exodus-gtm-pwa)
+#### Scenario: Sucursal con la bandera habilitada
+- GIVEN la sucursal "Centro" tiene habilitada `Bandera_ImagenListadoEnHH`
+- WHEN la app consulta esa bandera para "Centro"
+- THEN la considera activa
+#### Scenario: Sucursal sin la bandera habilitada
+- GIVEN la sucursal "Centro" no tiene habilitada `Bandera_ImagenListadoEnHH`
+- WHEN la app consulta esa bandera para "Centro"
+- THEN la considera inactiva
+#### Scenario: Falla al consultar la bandera de imagen
+- GIVEN el servicio de seguridad no responde
+- WHEN la app consulta `Bandera_ImagenListadoEnHH`
+- THEN la considera inactiva y el flujo continúa sin imágenes en el listado
+
 ## Historial
 - 2026-10-19 · map: inventario inicial (adopción del kit)
 - 2026-10-22 · map: referencias actualizadas por la división de `surtido-pedido` en `surtido-ronda` y `surtido-listado`
+- 2026-11-13 · 2026-11-10-surtido-listado-imagen-producto: ADDED "Bandera de imagen en el listado de surtido"

@@ -4,7 +4,7 @@
   "title": "Imagen del producto en el listado de surtido V2",
   "kind": "feature",
   "intensity": "standard",
-  "status": "converged",
+  "status": "synced",
   "created": "2026-11-10",
   "capabilities": [
     "surtido-listado",
@@ -32,9 +32,12 @@
       "by": "isaai",
       "at": "2026-11-12T17:59:29.337Z"
     },
-    "D": null
+    "D": {
+      "by": "juanito",
+      "at": "2026-11-12T19:30:06.205Z"
+    }
   },
-  "synced": false,
+  "synced": true,
   "metrics": {
     "verify_critical": 0,
     "converge_passes": 2
@@ -67,7 +70,12 @@
     {
       "status": "converged",
       "at": "2026-11-12T17:59:13.880Z"
+    },
+    {
+      "status": "synced",
+      "at": "2026-11-13T16:18:59.329Z"
     }
   ],
-  "updated": "2026-11-12T17:59:29.339Z"
+  "updated": "2026-11-12T19:30:06.206Z",
+  "syncedAt": "2026-11-13T16:18:59.329Z"
 }
